@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: spooky-trips-nextjs-dev-image
+    container_name: host-spooky-trips-nextjs-dev-frontend
+    build:
+      context: ./frontend
+      dockerfile: ../provision/frontend/development/Dockerfile
+    ports:
+      - ${NEXT_PUBLIC_APP_PORT}:3000
+    stdin_open: true
+    tty: true
+    env_file:
+      - .env
+    networks:
+      - main
+    volumes:
+      - ./frontend:/home/app
+
+  backend:
+    image: spooky-trips-nestjs-dev-image
+    container_name: host-spooky-trips-nestjs-dev-backend
+    build:
+      context: ./backend
+      dockerfile: ../provision/backend/development/Dockerfile
+    ports:
+      - ${NEST_PORT}:${NEST_PORT}
+    stdin_open: true
+    tty: true
+    env_file:
+      - .env
+    networks:
+      - main
+    volumes:
+      - ./backend:/var/www/stack
+
+networks:
+  main:
+    driver: bridge

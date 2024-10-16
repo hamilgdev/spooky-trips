@@ -81,3 +81,5 @@ logs
 # database
 *mongo*-data
 *postgres*-data
+
+*uploads

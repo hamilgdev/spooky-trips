@@ -21,6 +21,7 @@ export class CloudinaryDrivenService {
   ): Promise<cloudinary.UploadApiResponse> {
     const options: UploadApiOptions = {
       folder: 'upload-unsigned-images/spooky',
+      detection: 'captioning',
     };
     return cloudinary.v2.uploader.upload(`./uploads/${file.filename}`, options);
   }

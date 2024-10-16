@@ -9,13 +9,14 @@ export class FilesService {
 
   async uploadFile(file: Express.Multer.File) {
     try {
-      const { public_id, original_filename, url } =
-        await this.cloudinaryDrivenService.uploadFile(file);
+      const uploadedFile = await this.cloudinaryDrivenService.uploadFile(file);
+      const { public_id, original_filename, url, info } = uploadedFile;
       return {
         image: {
           url,
           public_id,
           original_filename,
+          captioning: info.detection.captioning,
         },
       };
     } catch (error) {

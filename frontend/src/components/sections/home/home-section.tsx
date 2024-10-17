@@ -11,7 +11,7 @@ export const HomeSection = () => {
               ¡Vacaciones aterradoras!
             </h1>
             <p className='mt-2 text-gray-600'>
-              Transforma tus ultimas vacaciones en una historia aterradora
+              Transforma tus ultimas vacaciones en un relato de terror
             </p>
             <div className='mt-4'>
               <DropzoneForm />

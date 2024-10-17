@@ -1,6 +1,11 @@
+'use client';
+
 import { TerrorOptionInput } from '@/components';
+import { panelSettingsStore } from '@/store';
 
 export const LevelTerrorOptions = () => {
+  const { setLevelTerror } = panelSettingsStore();
+
   return (
     <ul className='flex gap-2 flex-wrap'>
       <li>
@@ -9,6 +14,7 @@ export const LevelTerrorOptions = () => {
           value='low'
           label='Amigable'
           icon='👻'
+          onClick={() => setLevelTerror('low')}
         />
       </li>
 
@@ -18,6 +24,7 @@ export const LevelTerrorOptions = () => {
           value='medium'
           label='Escalofriante'
           icon='🎃'
+          onClick={() => setLevelTerror('medium')}
         />
       </li>
       <li>
@@ -26,6 +33,7 @@ export const LevelTerrorOptions = () => {
           value='high'
           label='Terrorífico'
           icon='👹'
+          onClick={() => setLevelTerror('high')}
         />
       </li>
     </ul>

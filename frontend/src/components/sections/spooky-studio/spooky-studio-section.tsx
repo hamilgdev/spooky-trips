@@ -8,7 +8,7 @@ export const SpookyStudioSection = () => {
       <div className='l-container h-full'>
         <div className='flex flex-col h-full gap-6'>
           <div className='flex-1 flex gap-8'>
-            <aside className='max-w-[312px] h-full bg-slate-50 rounded-md p-6'>
+            <aside className='max-w-[312px] h-full bg-slate-50 rounded-md overflow-hidden'>
               <PanelSettings />
             </aside>
             <StoryCanvas />

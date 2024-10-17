@@ -1,6 +1,8 @@
+import { LevelTerror } from '@/interfaces';
+
 interface TerrorOptionInputProps {
   id: string;
-  value: string;
+  value: LevelTerror;
   label: string;
   icon: string | JSX.Element;
   onClick?: () => void;

@@ -2,8 +2,19 @@
 
 import Image from 'next/image';
 import clsx from 'clsx';
+import { EffectTerror } from '@/interfaces';
+import { panelSettingsStore } from '@/store';
 
-const DEFAULT_EFFECTS = [
+interface DefaultEffect {
+  id: number;
+  value: EffectTerror;
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+}
+
+const DEFAULT_EFFECTS: DefaultEffect[] = [
   {
     id: 1,
     value: 'spooky-ghosts',
@@ -41,7 +52,6 @@ const DEFAULT_EFFECTS = [
 interface EffectSelectorProps {
   src: string;
   alt: string;
-  value: string;
   width: number;
   height: number;
   isSelected?: boolean;
@@ -50,7 +60,6 @@ interface EffectSelectorProps {
 
 const EffectSelector = ({
   alt,
-  value,
   height,
   src,
   width,
@@ -63,7 +72,7 @@ const EffectSelector = ({
         'p-0.5 h-auto max-w-full rounded-lg border-2 border-gray-200 hover:border-blue-600 cursor-pointer',
         isSelected && 'border-blue-600'
       )}
-      onClick={() => console.log('Effect selected', value)}
+      onClick={onClick}
     >
       <Image
         className='rounded-lg pointer-events-none'
@@ -77,6 +86,7 @@ const EffectSelector = ({
 };
 
 export const EffectSelectorOptions = () => {
+  const { effect: filterEffect, setEffect } = panelSettingsStore();
   return (
     <div className='flex gap-2 flex-wrap'>
       {DEFAULT_EFFECTS.map((effect) => (
@@ -84,9 +94,10 @@ export const EffectSelectorOptions = () => {
           <EffectSelector
             src={effect.src}
             alt={effect.alt}
-            value={effect.value}
             width={effect.width}
             height={effect.height}
+            isSelected={effect.value === filterEffect}
+            onClick={() => setEffect(effect.value)}
           />
           <figcaption className='mt-1 text-[10px] text-center text-gray-500 dark:text-gray-400'>
             {effect.value}

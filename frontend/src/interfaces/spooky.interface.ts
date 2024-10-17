@@ -1,3 +1,7 @@
+export type LevelTerror = 'low' | 'medium' | 'high';
+
+export type EffectTerror = 'spooky-ghosts' | 'spooky-jack-o-lanterns' | 'spooky-voodoo' | 'spooky-witch';
+
 export interface ImageCaption {
   image: Image;
 }
@@ -19,6 +23,5 @@ export interface Captioning {
 export interface Data {
   caption: string;
 }
-
 
 export type FileUploadResponse = ImageCaption

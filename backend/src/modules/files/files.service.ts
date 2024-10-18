@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CloudinaryDrivenService } from '@/src/services/cloudinary/cloudinary-driven.service';
+import { formatTransformedImageHandler } from '@/src/handlers';
 
 @Injectable()
 export class FilesService {
@@ -10,13 +11,18 @@ export class FilesService {
   async uploadFile(file: Express.Multer.File) {
     try {
       const uploadedFile = await this.cloudinaryDrivenService.uploadFile(file);
-      const { public_id, original_filename, url, info } = uploadedFile;
+      const { public_id, original_filename, secure_url, info } = uploadedFile;
+      const transformedImage =
+        await this.cloudinaryDrivenService.generativeFill(public_id);
+
       return {
         image: {
-          url,
+          guid: public_id.split('/').at(-1) || '',
           public_id,
           original_filename,
+          secure_url,
           captioning: info.detection.captioning,
+          transformed: formatTransformedImageHandler(transformedImage),
         },
       };
     } catch (error) {

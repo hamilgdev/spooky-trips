@@ -1,7 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import cloudinary, { UploadApiOptions } from 'cloudinary';
+import cloudinary, {
+  ConfigAndUrlOptions,
+  ImageTransformationAndTagsOptions,
+  UploadApiOptions,
+} from 'cloudinary';
 import { envs } from '@/src/config';
 import streamifier from 'streamifier';
+import { GenerateSpookyStoryDto } from '@/src/modules/spooky/dto';
+import { USE_CASES } from '@/src/constant/use-cases';
 
 @Injectable()
 export class CloudinaryDrivenService {
@@ -41,5 +47,40 @@ export class CloudinaryDrivenService {
       );
       streamifier.createReadStream(file.buffer).pipe(uploadStream);
     });
+  }
+
+  async generativeSpookyBackground(
+    prompt: GenerateSpookyStoryDto,
+  ): Promise<any> {
+    const { effect, public_image_id } = prompt;
+    const { spookyStory } = USE_CASES;
+    const customEffect = spookyStory.effects.find((e) => e.key === effect);
+
+    const parsedPromptToUrl = encodeURIComponent(customEffect.prompt);
+
+    const options: ImageTransformationAndTagsOptions | ConfigAndUrlOptions = {
+      transformation: [
+        { effect: `gen_background_replace:prompt_an${parsedPromptToUrl}` },
+        {
+          background: 'gen_fill',
+          height: 1920,
+          aspect_ratio: '9:16',
+          crop: 'pad',
+        },
+      ],
+    };
+
+    return cloudinary.v2.image(public_image_id, options);
+  }
+
+  async generativeFill(public_image_id: string): Promise<any> {
+    const options: ImageTransformationAndTagsOptions | ConfigAndUrlOptions = {
+      background: 'gen_fill',
+      height: 1920,
+      aspect_ratio: '9:16',
+      crop: 'pad',
+    };
+
+    return cloudinary.v2.image(public_image_id, options);
   }
 }

@@ -1,5 +1,16 @@
+import { SpookyEffect } from '@/src/interfaces';
+
+export type SpookyEffectTypes =
+  | 'spooky-ghosts'
+  | 'spooky-jack-o-lanterns'
+  | 'spooky-voodoo'
+  | 'spooky-witch';
+
+export type LevelTerrorTypes = 'low' | 'medium' | 'high';
+
 export type PromptType = {
-  prompt: () => string;
+  prompt: (levelTerror: LevelTerrorTypes, effect: string) => string;
+  effects: SpookyEffect[];
   settings: {
     maxTokens: number;
     temperature?: number;

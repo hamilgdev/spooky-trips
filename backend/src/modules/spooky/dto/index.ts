@@ -1,1 +1,1 @@
-export * from './image-caption.dto';
+export * from './generate-spooky-story.dto.ts';

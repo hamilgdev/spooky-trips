@@ -1,8 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CloudinaryDrivenService } from '@/src/services/cloudinary/cloudinary-driven.service';
-import { ImageCaptionDto } from './dto';
+import { GenerateSpookyStoryDto } from './dto';
 import { AiAnalyzerService } from '@/src/services/openai/ai-analyzer.service';
 import { SpookyStory } from '@/src/interfaces';
+import { formatTransformedImageHandler } from '@/src/handlers';
 
 @Injectable()
 export class SpookyService {
@@ -11,10 +12,22 @@ export class SpookyService {
     private readonly aiAnalyzerService: AiAnalyzerService,
   ) {}
 
-  async getSpookyStory(imageCaption: ImageCaptionDto): Promise<SpookyStory> {
+  async getSpookyStory(
+    generateSpookyStory: GenerateSpookyStoryDto,
+  ): Promise<SpookyStory> {
     try {
-      const spookyStory = await this.aiAnalyzerService.openAIChat(imageCaption);
-      return this.formatResponse(spookyStory);
+      const spookyImage =
+        await this.cloudinaryDrivenService.generativeSpookyBackground(
+          generateSpookyStory,
+        );
+
+      const spookyStory =
+        await this.aiAnalyzerService.openAIChat(generateSpookyStory);
+
+      return {
+        transformed_image_url: formatTransformedImageHandler(spookyImage),
+        spooky_story: this.formatResponse(spookyStory),
+      };
     } catch (error) {
       console.error(error);
       throw new BadRequestException('Error al obtener la historia de terror');
@@ -23,10 +36,8 @@ export class SpookyService {
 
   private formatResponse(analyzedImageCaption: string) {
     try {
-      const parsedResponse: SpookyStory = JSON.parse(analyzedImageCaption);
-      return {
-        story: parsedResponse.story,
-      };
+      const parsedResponse = JSON.parse(analyzedImageCaption);
+      return parsedResponse?.story || '';
     } catch (error) {
       console.error(error);
       throw new BadRequestException('Error al formatear la respuesta');

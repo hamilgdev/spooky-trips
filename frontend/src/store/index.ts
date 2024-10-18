@@ -23,9 +23,12 @@ export const panelSettingsStore = create<PanelSettingsStore>((set) => ({
 
 export type SpookyStoryStore = {
   currentStory: Story | null;
+  onAirStory: boolean;
+  setAirStory: (onAirStory: boolean) => void;
   setNewStory: () => void;
   setCurrentStory: (story: Story) => void;
   setRemoveCurrentStory: () => void;
+  setSelectStory: (story: Story) => void;
 };
 
 const draftStory: Story = {
@@ -40,6 +43,8 @@ const draftStory: Story = {
 
 export const spookyStoryStore = create<SpookyStoryStore>((set) => ({
   currentStory: null,
+  onAirStory: false,
+  setAirStory: (onAirStory: boolean) => set({ onAirStory }),
   setNewStory: () => {
     const timeline = timelineStoryStore.getState().timeline;
     const globalSettings = panelSettingsStore.getState().globalSettings;
@@ -69,6 +74,24 @@ export const spookyStoryStore = create<SpookyStoryStore>((set) => ({
       timelineStoryStore.setState({ timeline: newTimeline });
       const lastStory = newTimeline[newTimeline.length - 1];
       set({ currentStory: lastStory });
+    }
+  },
+  setSelectStory: (story: Story) => {
+    const timeline = timelineStoryStore.getState().timeline;
+
+    if (timeline) {
+      timeline.forEach((page) => page.isSelected = false);
+      const selectedStory = timeline.find((page) => page.guid === story.guid);
+      if (selectedStory) {
+        panelSettingsStore.setState({
+          effect: selectedStory?.settings?.effect,
+          levelTerror: selectedStory?.settings?.level_terror,
+        });
+
+        const index = timeline.indexOf(selectedStory);
+        timeline[index] = { ...selectedStory, isSelected: true };
+        set({ currentStory: selectedStory });
+      }
     }
   }
 }));

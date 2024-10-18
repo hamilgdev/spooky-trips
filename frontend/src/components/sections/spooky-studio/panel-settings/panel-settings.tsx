@@ -33,9 +33,6 @@ export const PanelSettings = () => {
 
   const onCheckboxHandler = () => setGlobalSettings(!globalSettings);
 
-  console.log({ levelTerror, effect });
-  console.log({ timeline });
-
   return (
     <div className='w-full h-full flex flex-col'>
       <div className='p-6 flex-1'>

@@ -25,7 +25,7 @@ export const TerrorOptionInput = ({
         value={value}
         name='terror-option'
         className='hidden peer'
-        checked={isSelected}
+        checked={isSelected || false}
         onClick={onClick}
       />
       <label

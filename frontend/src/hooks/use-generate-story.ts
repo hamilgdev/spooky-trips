@@ -6,13 +6,16 @@ import { HttpStatusCode } from "axios";
 import { useCallback } from "react";
 
 export function useGenerateStory() {
-  const { currentStory, setCurrentStory } = spookyStoryStore();
+  const { currentStory, setCurrentStory, setAirStory } = spookyStoryStore();
+
   const { levelTerror, effect } = panelSettingsStore();
 
   const handleGenerateStory = useCallback(async () => {
     if (!currentStory || !currentStory.caption || !currentStory.public_id || !levelTerror || !effect) return;
 
     try {
+      setAirStory(true);
+
       const params: GenerateStoryParams = {
         effect,
         level_terror: levelTerror,
@@ -36,7 +39,7 @@ export function useGenerateStory() {
     } catch (error) {
       errorHandler(error);
     }
-  }, [currentStory, effect, levelTerror, setCurrentStory]);
+  }, [currentStory, effect, levelTerror, setCurrentStory, setAirStory]);
 
   return { handleGenerateStory };
 }

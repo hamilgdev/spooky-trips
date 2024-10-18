@@ -4,6 +4,8 @@
 import { DropzoneForm } from '@/components';
 import { spookyStoryStore } from '@/store';
 import { Story, StoryStatus } from '@/interfaces';
+import { useEffect } from 'react';
+import clsx from 'clsx';
 
 const NewStoryPage = () => {
   return (
@@ -19,24 +21,55 @@ const NewStoryPage = () => {
 };
 
 const StoryPage = ({ currentStory }: { currentStory: Story }) => {
+  const { onAirStory, setAirStory } = spookyStoryStore();
+
   const { caption, paragraph, tranformed_image } = currentStory;
+
+  useEffect(() => {
+    const storyImage = document.getElementById(
+      'story-image'
+    ) as HTMLImageElement;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let storyImageEvent: any;
+    if (storyImage) {
+      storyImageEvent = storyImage.addEventListener('load', () => {
+        setAirStory(false);
+      });
+    }
+
+    return () => {
+      if (storyImage) storyImage.removeEventListener('load', storyImageEvent);
+    };
+  }, [setAirStory, onAirStory]);
 
   return (
     <div className='flex h-full justify-center items-center'>
-      <div className='flex-1 p-2'>
-        <img
-          className='object-contain w-full h-full aspect-[9/16] border-0 rounded-sm pointer-events-none'
-          src={tranformed_image || ''}
-          alt={caption || ''}
-          width={1080}
-          height={1920}
-        />
-      </div>
-      <div className='flex-1 p-4 h-full flex items-center justify-center'>
-        <p className='text-gray-400 text-center font-semibold text-md'>
-          {paragraph || '...'}
-        </p>
-      </div>
+      <>
+        <div className='flex-1 p-2'>
+          <img
+            id='story-image'
+            className={clsx(
+              'object-contain w-full h-full aspect-[9/16] border-0 rounded-sm pointer-events-none',
+              onAirStory && 'bg-orange-400 animate-pulse'
+            )}
+            src={tranformed_image || ''}
+            alt={caption || ''}
+            width={1080}
+            height={1920}
+            loading='lazy'
+          />
+        </div>
+        <div className='flex-1 p-4 h-full flex items-center justify-center'>
+          <p
+            className={clsx(
+              'text-gray-400 text-center font-semibold text-md',
+              onAirStory && 'animate-pulse'
+            )}
+          >
+            {onAirStory === false && paragraph ? paragraph : '...'}
+          </p>
+        </div>
+      </>
     </div>
   );
 };

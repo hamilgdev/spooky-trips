@@ -32,7 +32,7 @@ const PageCard = ({
 
       <div
         className={clsx(
-          'flex flex-col items-center w-20 h-14 bg-gray-400 rounded-sm shadow-md border-2 border-gray-300 hover:border-blue-600 cursor-pointer',
+          'flex flex-col items-center w-20 h-14 bg-gray-400 rounded-sm shadow-md border-2  hover:border-blue-600 cursor-pointer',
           isSelected && 'bg-slate-600 border-blue-600'
         )}
       />
@@ -52,7 +52,7 @@ const TimelineItem = ({ children }: { children: React.ReactNode }) => {
 };
 
 export const TimelinePages = () => {
-  const { currentStory, setNewStory } = spookyStoryStore();
+  const { currentStory, setNewStory, setSelectStory } = spookyStoryStore();
   const { timeline } = timelineStoryStore();
 
   const handleFinishStory = () => {
@@ -70,12 +70,13 @@ export const TimelinePages = () => {
     <footer className='bg-slate-50 rounded-md min-h-[124px] flex justify-center overflow-hidden '>
       <div className='p-6 flex-1 flex justify-center flex-col'>
         <ol className='flex text-sm font-medium text-center text-gray-500 items-center'>
-          {timeline?.map((page, index) => (
+          {timeline?.map((story, index) => (
             <TimelineItem key={index + 1}>
               <PageCard
                 count={index + 1}
-                status={page.status}
-                isSelected={page.isSelected}
+                status={story.status}
+                isSelected={story.isSelected}
+                onClick={() => setSelectStory(story)}
               />
             </TimelineItem>
           ))}

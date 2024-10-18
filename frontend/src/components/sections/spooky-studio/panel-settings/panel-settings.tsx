@@ -19,10 +19,12 @@ export const PanelSettings = () => {
   const { levelTerror, effect, globalSettings, setGlobalSettings } =
     panelSettingsStore();
 
+  const currentStorySettings = currentStory?.settings;
+
   const hasStory = !!currentStory;
   const hasSameEffectSettings =
-    currentStory?.settings?.effect === effect &&
-    currentStory?.settings?.level_terror === levelTerror;
+    currentStorySettings?.effect === effect &&
+    currentStorySettings?.level_terror === levelTerror;
 
   const isStoryPending = currentStory?.status === StoryStatus.PENDING;
   const isStoryCreated = currentStory?.status === StoryStatus.CREATED;
@@ -32,7 +34,6 @@ export const PanelSettings = () => {
   const onCheckboxHandler = () => setGlobalSettings(!globalSettings);
 
   console.log({ levelTerror, effect });
-
   console.log({ timeline });
 
   return (
@@ -65,7 +66,7 @@ export const PanelSettings = () => {
         </h4>
         <div className='flex gap-3 flex-col'>
           <div className='flex gap-1 items-center'>
-            <span className='text-xs text-gray-600'>Página actual:</span>
+            <span className='text-xs text-gray-600'>Páginas totales:</span>
             <BasicBadge text={`${timeline?.length || 0}`} />
           </div>
 
@@ -100,7 +101,7 @@ export const PanelSettings = () => {
           variant='outline'
           onClick={handleGenerateStory}
         >
-          {isStoryCreated ? 'Regenerar' : 'Generar'}&nbsp; Relato
+          {isStoryCreated ? 'Regenerar' : 'Generar'}&nbsp;Relato
         </Button>
       </div>
     </div>

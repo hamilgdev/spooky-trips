@@ -38,6 +38,7 @@ export function useUploadFile() {
         }
       } catch (error) {
         errorHandler(error);
+        setAirStory(false);
       } finally {
         setIsLoading(false);
       }

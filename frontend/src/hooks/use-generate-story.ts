@@ -38,6 +38,7 @@ export function useGenerateStory() {
       }
     } catch (error) {
       errorHandler(error);
+      setAirStory(false);
     }
   }, [currentStory, effect, levelTerror, setCurrentStory, setAirStory]);
 

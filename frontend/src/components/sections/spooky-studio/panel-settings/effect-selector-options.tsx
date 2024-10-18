@@ -10,8 +10,6 @@ interface DefaultEffect {
   value: EffectTerror;
   src: string;
   alt: string;
-  width: number;
-  height: number;
 }
 
 const DEFAULT_EFFECTS: DefaultEffect[] = [
@@ -20,66 +18,54 @@ const DEFAULT_EFFECTS: DefaultEffect[] = [
     value: 'spooky-ghosts',
     src: '/assets/images/spooky-ghosts.webp',
     alt: 'spooky ghosts effect',
-    width: 128,
-    height: 56,
   },
   {
     id: 2,
     value: 'spooky-jack-o-lanterns',
     src: '/assets/images/spooky-jack-o-lanterns.webp',
     alt: 'spooky jack-o-lanterns effect',
-    width: 128,
-    height: 56,
   },
   {
     id: 3,
     value: 'spooky-voodoo',
     src: '/assets/images/spooky-voodoo.webp',
     alt: 'spooky voodoo effect',
-    width: 128,
-    height: 56,
   },
   {
     id: 4,
     value: 'spooky-witch',
     src: '/assets/images/spooky-witch.webp',
     alt: 'spooky witch effect',
-    width: 128,
-    height: 56,
   },
 ];
 
 interface EffectSelectorProps {
   src: string;
   alt: string;
-  width: number;
-  height: number;
   isSelected?: boolean;
   onClick?: () => void;
 }
 
 const EffectSelector = ({
   alt,
-  height,
   src,
-  width,
   isSelected,
   onClick,
 }: EffectSelectorProps) => {
   return (
     <div
+      onClick={onClick}
       className={clsx(
-        'p-0.5 h-auto max-w-full rounded-lg border-2 border-gray-200 hover:border-blue-600 cursor-pointer',
+        'p-0.5 h-auto max-w-full rounded-lg border-2 cursor-pointer',
         isSelected && 'border-blue-600'
       )}
-      onClick={onClick}
     >
       <Image
         className='rounded-lg pointer-events-none'
         src={src}
         alt={alt}
-        width={width}
-        height={height}
+        width={128}
+        height={56}
       />
     </div>
   );
@@ -94,8 +80,6 @@ export const EffectSelectorOptions = () => {
           <EffectSelector
             src={effect.src}
             alt={effect.alt}
-            width={effect.width}
-            height={effect.height}
             isSelected={effect.value === filterEffect}
             onClick={() => setEffect(effect.value)}
           />

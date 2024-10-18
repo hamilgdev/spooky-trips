@@ -1,50 +1,109 @@
 'use client';
 
-import { CopyPlusIcon } from '@/components';
+import clsx from 'clsx';
 
-const PAGES = [
-  {
-    title: 'Página 1',
-  },
-];
+import { Button, CopyPlusIcon, TrashIcon } from '@/components';
+import { spookyStoryStore, timelineStoryStore } from '@/store';
+import { StoryStatus } from '@/interfaces';
 
-const PageCard = ({ onClick }: { onClick?: () => void }) => {
+const LIMIT_PAGES = 5;
+
+const PageCard = ({
+  status,
+  isSelected,
+  count,
+  onClick,
+}: {
+  status?: StoryStatus;
+  isSelected?: boolean;
+  count: number;
+  onClick?: () => void;
+}) => {
+  const { setRemoveCurrentStory } = spookyStoryStore();
   return (
-    <article className='cursor-pointer' onClick={onClick}>
-      <div className='flex flex-col items-center w-20 h-14 bg-gray-400 rounded-sm shadow-md'></div>
-      <span className='text-xs font-semibold text-gray-400'>Página 1</span>
+    <article className='cursor-pointe relative' onClick={onClick}>
+      {status === StoryStatus.PENDING && (
+        <div className='absolute right-1 top-1' onClick={setRemoveCurrentStory}>
+          <Button variant='ghost' className='text-white p-1 size-8'>
+            <TrashIcon />
+          </Button>
+        </div>
+      )}
+
+      <div
+        className={clsx(
+          'flex flex-col items-center w-20 h-14 bg-gray-400 rounded-sm shadow-md border-2 border-gray-300 hover:border-blue-600 cursor-pointer',
+          isSelected && 'bg-slate-600 border-blue-600'
+        )}
+      />
+      <span className='text-xs font-semibold text-gray-400'>
+        Página {count}
+      </span>
     </article>
   );
 };
 
 const TimelineItem = ({ children }: { children: React.ReactNode }) => {
   return (
-    <li className="flex w-full items-center text-blue-600  sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10">
+    <li className="flex w-fit items-center text-blue-600 after:content-[''] after:pr-8 after:w-fit after:h-1 after:border-b after:border-gray-400 after:border-1 after:mx-6 last:after:hidden">
       {children}
     </li>
   );
 };
 
 export const TimelinePages = () => {
+  const { currentStory, setNewStory } = spookyStoryStore();
+  const { timeline } = timelineStoryStore();
+
+  const handleFinishStory = () => {
+    console.log('finish story');
+  };
+
+  // validations
+
+  const isFull = timeline?.length === LIMIT_PAGES;
+
+  const isStoryPending = currentStory?.status === StoryStatus.PENDING;
+  const isStoryEditing = currentStory?.status === StoryStatus.EDITING;
+
   return (
-    <footer className='bg-slate-50 rounded-md p-6 min-h-32 flex flex-col justify-center'>
-      <ol className='flex items-center w-full text-sm font-medium text-center text-gray-500 sm:text-base'>
-        {PAGES.map((page, index) => (
-          <>
-            <TimelineItem key={index}>
-              <PageCard />
+    <footer className='bg-slate-50 rounded-md min-h-[124px] flex justify-center overflow-hidden '>
+      <div className='p-6 flex-1 flex justify-center flex-col'>
+        <ol className='flex text-sm font-medium text-center text-gray-500 items-center'>
+          {timeline?.map((page, index) => (
+            <TimelineItem key={index + 1}>
+              <PageCard
+                count={index + 1}
+                status={page.status}
+                isSelected={page.isSelected}
+              />
             </TimelineItem>
+          ))}
+          {!isFull && (
             <TimelineItem>
-              <div
+              <Button
+                title='Agregar página'
+                variant='ghost'
+                disabled={isStoryPending || isStoryEditing}
                 className='flex items-center text-gray-400 text-xs font-semibold gap-2 mt-1 cursor-pointer'
-                onClick={() => console.log('add page')}
+                onClick={setNewStory}
               >
                 <CopyPlusIcon />
-              </div>
+              </Button>
             </TimelineItem>
-          </>
-        ))}
-      </ol>
+          )}
+        </ol>
+      </div>
+
+      <div>
+        <Button
+          className='w-full rounded-none h-full'
+          variant='outline'
+          onClick={handleFinishStory}
+        >
+          Terminar Relatos
+        </Button>
+      </div>
     </footer>
   );
 };

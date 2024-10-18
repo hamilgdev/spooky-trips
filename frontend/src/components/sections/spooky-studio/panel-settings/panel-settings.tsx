@@ -4,22 +4,59 @@ import { BasicBadge, Button } from '@/components';
 
 import { LevelTerrorOptions } from './level-terror-options';
 import { EffectSelectorOptions } from './effect-selector-options';
-import { panelSettingsStore } from '@/store';
+import {
+  panelSettingsStore,
+  spookyStoryStore,
+  timelineStoryStore,
+} from '@/store';
+import { StoryStatus } from '@/interfaces';
 
 export const PanelSettings = () => {
-  const { levelTerror, effect, globalSettings, setGlobalSettings } =
-    panelSettingsStore();
+  const { timeline } = timelineStoryStore();
+  const { currentStory, setCurrentStory } = spookyStoryStore();
+  const {
+    levelTerror,
+    effect,
+    globalSettings,
+    setGlobalSettings,
+    setResetFilters,
+  } = panelSettingsStore();
+
+  const hasStory = !!currentStory;
+
+  const isStoryPending = currentStory?.status === StoryStatus.PENDING;
+  const isStoryCreated = currentStory?.status === StoryStatus.CREATED;
 
   const isGlobalSettingsSelected = !levelTerror || !effect;
 
   const onCheckboxHandler = () => setGlobalSettings(!globalSettings);
 
-  const handleGenerateStory = () => {
+  const handleUpdateStory = async () => {
     const params = {
       terror_level: levelTerror,
       terror_effect: effect,
     };
+
     console.log({ params });
+    if (!globalSettings) setResetFilters();
+
+    try {
+      const responseStory = {
+        image_url:
+          'http://res.cloudinary.com/prod-hamilgdev/image/upload/v1729090578/upload-unsigned-images/spooky/nojojakrnzczbp22m3xb.webp',
+        public_id: 'upload-unsigned-images/spooky/nojojakrnzczbp22m3xb',
+        caption:
+          'A family of multiple generations walking together on a beach, with mountains visible in the background and the ocean reflecting the sky.',
+        original_name: 'vacationing',
+      };
+
+      setCurrentStory({
+        ...responseStory,
+        paragraph:
+          'La familia decidió tomar unas vacaciones en una playa remota, lejos de la civilización. Mientras disfrutaban del hermoso paisaje, una niebla espesa comenzó a rodearlos, ocultando la vista de las montañas. Pronto, las olas del mar se volvieron violentas, arrastrando objetos extraños hacia la orilla. La familia se dio cuenta de que algo siniestro acechaba en el agua, esperando su oportunidad para arrastrarlos hacia lo desconocido. Aterrorizados, intentaron huir, pero descubrieron que la niebla los había atrapado en un lugar donde el tiempo parecía detenerse, condenándolos a una eternidad de horror en esa playa maldita.',
+        status: StoryStatus.CREATED,
+      });
+    } catch (error) {}
   };
 
   return (
@@ -32,7 +69,7 @@ export const PanelSettings = () => {
           Nivel de terror
         </h4>
         <p className='text-xs text-gray-500 mb-2 leading-5'>
-          Determina la intensidad de miendo de la historia.
+          Determina la intensidad de miendo del relato.
         </p>
         <div className='mb-6'>
           <LevelTerrorOptions />
@@ -53,7 +90,7 @@ export const PanelSettings = () => {
         <div className='flex gap-3 flex-col'>
           <div className='flex gap-1 items-center'>
             <span className='text-xs text-gray-600'>Página actual:</span>
-            <BasicBadge text='1' />
+            <BasicBadge text={`${timeline?.length || 0}`} />
           </div>
 
           <div className='flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700'>
@@ -77,12 +114,12 @@ export const PanelSettings = () => {
       </div>
       <div className='mt-6'>
         <Button
-          disabled={isGlobalSettingsSelected}
+          disabled={!hasStory || isGlobalSettingsSelected || isStoryPending}
           className='w-full rounded-none h-16'
           variant='outline'
-          onClick={handleGenerateStory}
+          onClick={handleUpdateStory}
         >
-          Generar relato
+          {isStoryCreated ? 'Re-generar' : 'Generar'}&nbsp; Relato
         </Button>
       </div>
     </div>

@@ -5,6 +5,7 @@ interface TerrorOptionInputProps {
   value: LevelTerror;
   label: string;
   icon: string | JSX.Element;
+  isSelected?: boolean;
   onClick?: () => void;
 }
 
@@ -13,6 +14,7 @@ export const TerrorOptionInput = ({
   value,
   label,
   icon,
+  isSelected,
   onClick,
 }: TerrorOptionInputProps) => {
   return (
@@ -23,6 +25,7 @@ export const TerrorOptionInput = ({
         value={value}
         name='terror-option'
         className='hidden peer'
+        checked={isSelected}
         onClick={onClick}
       />
       <label

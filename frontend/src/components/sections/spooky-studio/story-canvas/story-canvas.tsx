@@ -1,6 +1,9 @@
-import Image from 'next/image';
+/* eslint-disable @next/next/no-img-element */
+'use client';
 
 import { DropzoneForm } from '@/components';
+import { spookyStoryStore } from '@/store';
+import { Story, StoryStatus } from '@/interfaces';
 
 const NewStoryPage = () => {
   return (
@@ -15,30 +18,44 @@ const NewStoryPage = () => {
   );
 };
 
-const StoryPage = () => {
+const StoryPage = ({ currentStory }: { currentStory: Story }) => {
+  const { image_url, caption, paragraph } = currentStory;
+
   return (
     <div className='flex h-full justify-center items-center'>
       <div className='flex-1 p-2'>
-        <Image
+        <img
           className='object-contain w-full h-full aspect-[9/16] border-0 rounded-sm pointer-events-none'
-          src='/assets/images/vacationing.webp'
-          alt='ghost'
+          src={image_url || ''}
+          alt={caption || ''}
           width={1080}
           height={1920}
         />
       </div>
       <div className='flex-1 p-4 h-full flex items-center justify-center'>
-        <p className='text-gray-400 text-center font-semibold text-md'>...</p>
+        <p className='text-gray-400 text-center font-semibold text-md'>
+          {paragraph || '...'}
+        </p>
       </div>
     </div>
   );
 };
 
 export const StoryCanvas = () => {
+  const { currentStory } = spookyStoryStore();
+
+  if (!currentStory) return null;
+
+  const isStoryPending = currentStory?.status === StoryStatus.PENDING;
+  const isStoryEditing = currentStory?.status === StoryStatus.EDITING;
+  const isStoryCreated = currentStory?.status === StoryStatus.CREATED;
+
   return (
     <main className='bg-slate-100 w-full rounded-md'>
-      <StoryPage />
-      {/* <NewStoryPage /> */}
+      {isStoryPending && <NewStoryPage />}
+      {(isStoryEditing || isStoryCreated) && (
+        <StoryPage currentStory={currentStory} />
+      )}
     </main>
   );
 };

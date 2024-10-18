@@ -1,8 +1,8 @@
-import { LevelTerror } from '@/interfaces';
+import { LevelTerrorTypes } from '@/interfaces';
 
 interface TerrorOptionInputProps {
   id: string;
-  value: LevelTerror;
+  value: LevelTerrorTypes;
   label: string;
   icon: string | JSX.Element;
   isSelected?: boolean;

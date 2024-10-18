@@ -2,12 +2,12 @@
 
 import Image from 'next/image';
 import clsx from 'clsx';
-import { EffectTerror } from '@/interfaces';
+import { EffectTerrorTypes } from '@/interfaces';
 import { panelSettingsStore } from '@/store';
 
 interface DefaultEffect {
   id: number;
-  value: EffectTerror;
+  value: EffectTerrorTypes;
   src: string;
   alt: string;
 }

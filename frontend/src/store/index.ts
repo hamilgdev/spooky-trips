@@ -1,11 +1,11 @@
-import { EffectTerror, LevelTerror, Story, StoryStatus } from "@/interfaces";
+import { EffectTerrorTypes, LevelTerrorTypes, Story, StoryStatus } from "@/interfaces";
 import { create } from "zustand";
 
 export type PanelSettingsStore = {
-  levelTerror: LevelTerror | null;
-  setLevelTerror: (level: LevelTerror) => void;
-  effect: EffectTerror | null;
-  setEffect: (effect: EffectTerror) => void;
+  levelTerror: LevelTerrorTypes | null;
+  setLevelTerror: (level: LevelTerrorTypes) => void;
+  effect: EffectTerrorTypes | null;
+  setEffect: (effect: EffectTerrorTypes) => void;
   globalSettings: boolean;
   setGlobalSettings: (globalSettings: boolean) => void;
   setResetFilters: () => void;
@@ -13,9 +13,9 @@ export type PanelSettingsStore = {
 
 export const panelSettingsStore = create<PanelSettingsStore>((set) => ({
   levelTerror: null,
-  setLevelTerror: (level: LevelTerror) => set({ levelTerror: level }),
+  setLevelTerror: (level: LevelTerrorTypes) => set({ levelTerror: level }),
   effect: null,
-  setEffect: (effect: EffectTerror) => set({ effect }),
+  setEffect: (effect: EffectTerrorTypes) => set({ effect }),
   globalSettings: false,
   setGlobalSettings: (globalSettings: boolean) => set({ globalSettings }),
   setResetFilters: () => set({ levelTerror: null, effect: null }),

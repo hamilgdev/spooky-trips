@@ -19,14 +19,14 @@ const NewStoryPage = () => {
 };
 
 const StoryPage = ({ currentStory }: { currentStory: Story }) => {
-  const { image_url, caption, paragraph } = currentStory;
+  const { caption, paragraph, tranformed_image } = currentStory;
 
   return (
     <div className='flex h-full justify-center items-center'>
       <div className='flex-1 p-2'>
         <img
           className='object-contain w-full h-full aspect-[9/16] border-0 rounded-sm pointer-events-none'
-          src={image_url || ''}
+          src={tranformed_image || ''}
           alt={caption || ''}
           width={1080}
           height={1920}

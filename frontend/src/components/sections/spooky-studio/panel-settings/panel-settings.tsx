@@ -10,19 +10,19 @@ import {
   timelineStoryStore,
 } from '@/store';
 import { StoryStatus } from '@/interfaces';
+import { useGenerateStory } from '@/hooks';
 
 export const PanelSettings = () => {
+  const { handleGenerateStory } = useGenerateStory();
   const { timeline } = timelineStoryStore();
-  const { currentStory, setCurrentStory } = spookyStoryStore();
-  const {
-    levelTerror,
-    effect,
-    globalSettings,
-    setGlobalSettings,
-    setResetFilters,
-  } = panelSettingsStore();
+  const { currentStory } = spookyStoryStore();
+  const { levelTerror, effect, globalSettings, setGlobalSettings } =
+    panelSettingsStore();
 
   const hasStory = !!currentStory;
+  const hasSameEffectSettings =
+    currentStory?.settings?.effect === effect &&
+    currentStory?.settings?.level_terror === levelTerror;
 
   const isStoryPending = currentStory?.status === StoryStatus.PENDING;
   const isStoryCreated = currentStory?.status === StoryStatus.CREATED;
@@ -31,33 +31,9 @@ export const PanelSettings = () => {
 
   const onCheckboxHandler = () => setGlobalSettings(!globalSettings);
 
-  const handleUpdateStory = async () => {
-    const params = {
-      terror_level: levelTerror,
-      terror_effect: effect,
-    };
+  console.log({ levelTerror, effect });
 
-    console.log({ params });
-    if (!globalSettings) setResetFilters();
-
-    try {
-      const responseStory = {
-        image_url:
-          'http://res.cloudinary.com/prod-hamilgdev/image/upload/v1729090578/upload-unsigned-images/spooky/nojojakrnzczbp22m3xb.webp',
-        public_id: 'upload-unsigned-images/spooky/nojojakrnzczbp22m3xb',
-        caption:
-          'A family of multiple generations walking together on a beach, with mountains visible in the background and the ocean reflecting the sky.',
-        original_name: 'vacationing',
-      };
-
-      setCurrentStory({
-        ...responseStory,
-        paragraph:
-          'La familia decidió tomar unas vacaciones en una playa remota, lejos de la civilización. Mientras disfrutaban del hermoso paisaje, una niebla espesa comenzó a rodearlos, ocultando la vista de las montañas. Pronto, las olas del mar se volvieron violentas, arrastrando objetos extraños hacia la orilla. La familia se dio cuenta de que algo siniestro acechaba en el agua, esperando su oportunidad para arrastrarlos hacia lo desconocido. Aterrorizados, intentaron huir, pero descubrieron que la niebla los había atrapado en un lugar donde el tiempo parecía detenerse, condenándolos a una eternidad de horror en esa playa maldita.',
-        status: StoryStatus.CREATED,
-      });
-    } catch (error) {}
-  };
+  console.log({ timeline });
 
   return (
     <div className='w-full h-full flex flex-col'>
@@ -114,12 +90,17 @@ export const PanelSettings = () => {
       </div>
       <div className='mt-6'>
         <Button
-          disabled={!hasStory || isGlobalSettingsSelected || isStoryPending}
+          disabled={
+            !hasStory ||
+            isGlobalSettingsSelected ||
+            isStoryPending ||
+            hasSameEffectSettings
+          }
           className='w-full rounded-none h-16'
           variant='outline'
-          onClick={handleUpdateStory}
+          onClick={handleGenerateStory}
         >
-          {isStoryCreated ? 'Re-generar' : 'Generar'}&nbsp; Relato
+          {isStoryCreated ? 'Regenerar' : 'Generar'}&nbsp; Relato
         </Button>
       </div>
     </div>

@@ -19,6 +19,7 @@ const notificationManagerMessage = (message: string) => {
   })
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const errorHandler = (error: any) => {
   const data = error?.response?.data || false;
 

@@ -1,6 +1,6 @@
-# Spooky Trips 👻
+# Spooky Trips 🎃
 
-![Cover application](/assets/og.png)
+![Cover application](/assets/og.jpeg)
 
 Spooky trips is an interactive application where users can upload vacation photos and turn them into spooky stories. Through artificial intelligence, the images are transformed with spooky effects and replaced objects, while a text generation system creates a terrifying narrative based on the photos.
 

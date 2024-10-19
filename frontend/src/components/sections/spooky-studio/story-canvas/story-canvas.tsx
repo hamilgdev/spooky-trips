@@ -61,11 +61,15 @@ const StoryPage = ({ currentStory }: { currentStory: Story }) => {
         <div className='flex-1 p-4 h-full flex items-center justify-center'>
           <p
             className={clsx(
-              'text-gray-400 text-center font-semibold text-md',
+              'text-gray-300 text-center font-semibold text-md',
               onAirStory && 'animate-pulse'
             )}
           >
-            {onAirStory === false && paragraph ? paragraph : 'Cargando...'}
+            {onAirStory && !paragraph
+              ? 'Cargando...'
+              : onAirStory === false && paragraph
+              ? paragraph
+              : '...'}
           </p>
         </div>
       </>

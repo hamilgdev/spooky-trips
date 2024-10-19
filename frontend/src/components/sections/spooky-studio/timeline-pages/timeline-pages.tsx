@@ -63,8 +63,10 @@ export const TimelinePages = () => {
 
   const isFull = timeline?.length === LIMIT_PAGES;
 
-  const isStoryPending = currentStory?.status === StoryStatus.PENDING;
   const isStoryEditing = currentStory?.status === StoryStatus.EDITING;
+  const hasSomeStoryPending = timeline?.some(
+    (story) => story.status === StoryStatus.PENDING
+  );
 
   return (
     <footer className='bg-gray-800/60 rounded-md  min-h-[124px] flex justify-center overflow-hidden '>
@@ -85,7 +87,7 @@ export const TimelinePages = () => {
               <Button
                 title='Agregar página'
                 variant='ghost'
-                disabled={isStoryPending || isStoryEditing}
+                disabled={isStoryEditing || hasSomeStoryPending}
                 className='flex items-center text-gray-100 text-xs font-semibold gap-2 mt-1 cursor-pointer'
                 onClick={setNewStory}
               >

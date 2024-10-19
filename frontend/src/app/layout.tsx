@@ -1,9 +1,15 @@
 import type { Metadata } from 'next';
-import { Inter as FontSans } from 'next/font/google';
+import { Inter as FontSans, Henny_Penny } from 'next/font/google';
 import './globals.css';
 import 'toastify-js/src/toastify.css';
 
 import { cn } from '@/lib/utils';
+
+const henneyPenny = Henny_Penny({
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-henny-penny',
+});
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -24,7 +30,11 @@ export default function RootLayout({
   return (
     <html lang='es'>
       <body
-        className={cn('min-h-screen font-sans antialiased', fontSans.variable)}
+        className={cn(
+          'min-h-screen font-sans antialiased',
+          fontSans.variable,
+          henneyPenny.variable
+        )}
       >
         {children}
       </body>

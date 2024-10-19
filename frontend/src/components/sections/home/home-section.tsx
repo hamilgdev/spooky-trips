@@ -3,6 +3,14 @@ import { BookCard, DropzoneForm } from '@/components';
 export const HomeSection = () => {
   return (
     <section className='relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-[#09203f] to-[#09203f]'>
+      <h1
+        className='absolute text-white font-bold text-8xl text-center top-16 font-henny-penny pointer-events-none'
+        style={{
+          textShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
+        }}
+      >
+        Spooky Trips
+      </h1>
       <div
         className='pointer-events-none w-full h-full absolute -top-20 -left-6'
         style={{
@@ -29,9 +37,9 @@ export const HomeSection = () => {
             <BookCard />
           </div>
           <div className='flex-1 text-center text-white flex justify-center flex-col'>
-            <h1 className='font-bold text-4xl shadow-lg-cyan-500/50'>
+            <h2 className='font-bold text-4xl shadow-lg-cyan-500/50'>
               ¡Vacaciones Aterradoras!
-            </h1>
+            </h2>
             <p className='mt-2 text-md font-semibold'>
               Transforma tus vacaciones en un relato de terror
             </p>

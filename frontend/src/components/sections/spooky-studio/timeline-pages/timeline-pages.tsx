@@ -1,10 +1,8 @@
 'use client';
 
-import clsx from 'clsx';
-
 import { Button, CopyPlusIcon, TrashIcon } from '@/components';
 import { spookyStoryStore, timelineStoryStore } from '@/store';
-import { StoryStatus } from '@/interfaces';
+import { Story, StoryStatus } from '@/interfaces';
 
 const LIMIT_PAGES = 5;
 
@@ -31,10 +29,10 @@ const PageCard = ({
       )}
 
       <div
-        className={clsx(
-          'flex flex-col items-center w-20 h-14 bg-purple-950 rounded-md shadow-md border-2 border-purple-800 hover:border-purple-500 cursor-pointer',
-          isSelected && 'bg-purple-700 border-purple-800'
-        )}
+        style={
+          isSelected ? { borderColor: '#a855f7' } : { borderColor: '#581c87' }
+        }
+        className='flex flex-col items-center w-20 h-14 bg-purple-950 rounded-md shadow-md border-2 border-purple-900 hover:border-purple-500 cursor-pointer hover:bg-purple-800'
       />
       <span className='text-xs font-semibold text-gray-100'>
         Página {count}
@@ -52,7 +50,8 @@ const TimelineItem = ({ children }: { children: React.ReactNode }) => {
 };
 
 export const TimelinePages = () => {
-  const { currentStory, setNewStory, setSelectStory } = spookyStoryStore();
+  const { currentStory, setNewStory, setSelectStory, onAirStory } =
+    spookyStoryStore();
   const { timeline } = timelineStoryStore();
 
   const handleFinishStory = () => {
@@ -68,6 +67,11 @@ export const TimelinePages = () => {
     (story) => story.status === StoryStatus.PENDING
   );
 
+  const handleSelectStory = (story: Story) => {
+    if (onAirStory) return;
+    setSelectStory(story);
+  };
+
   return (
     <footer className='bg-gray-800/60 rounded-md  min-h-[124px] flex justify-center overflow-hidden '>
       <div className='p-6 flex-1 flex justify-center flex-col'>
@@ -78,7 +82,7 @@ export const TimelinePages = () => {
                 count={index + 1}
                 status={story.status}
                 isSelected={story.isSelected}
-                onClick={() => setSelectStory(story)}
+                onClick={() => handleSelectStory(story)}
               />
             </TimelineItem>
           ))}

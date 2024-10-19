@@ -36,7 +36,9 @@ export const PanelSettings = () => {
   return (
     <div className='w-full h-full flex flex-col overflow-hidden'>
       <div className='p-6 flex-1'>
-        <h2 className='text-lg font-bold text-gray-100'>Relato</h2>
+        <h2 className='text-2xl font-bold text-gray-100 font-henny-penny'>
+          Relato
+        </h2>
         <hr className='border-t border-gray-300 my-2' />
 
         <h4 className='text-md text-white font-bold mt-6 mb-1'>

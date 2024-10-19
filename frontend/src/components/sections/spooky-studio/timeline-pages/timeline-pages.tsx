@@ -91,7 +91,7 @@ export const TimelinePages = () => {
               <Button
                 title='Agregar página'
                 variant='ghost'
-                disabled={isStoryEditing || hasSomeStoryPending}
+                disabled={isStoryEditing || hasSomeStoryPending || onAirStory}
                 className='flex items-center text-gray-100 text-xs font-semibold gap-2 mt-1 cursor-pointer'
                 onClick={setNewStory}
               >

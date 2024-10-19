@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import clsx from 'clsx';
 import { EffectTerrorTypes } from '@/interfaces';
 import { panelSettingsStore } from '@/store';
 
@@ -55,13 +54,13 @@ const EffectSelector = ({
   return (
     <div
       onClick={onClick}
-      className={clsx(
-        'p-0.5 h-auto max-w-full rounded-lg border-2 cursor-pointer',
-        isSelected && 'border-blue-600'
-      )}
+      style={
+        isSelected ? { borderColor: '#c084fc' } : { borderColor: 'transparent' }
+      }
+      className='p-0.5 h-auto max-w-full rounded-lg cursor-pointer border-2'
     >
       <Image
-        className='rounded-lg pointer-events-none'
+        className='rounded-lg  h-[78px] w-[128px] transition hover:scale-105'
         src={src}
         alt={alt}
         width={128}
@@ -83,7 +82,7 @@ export const EffectSelectorOptions = () => {
             isSelected={effect.value === filterEffect}
             onClick={() => setEffect(effect.value)}
           />
-          <figcaption className='mt-1 text-[10px] text-center text-gray-500 dark:text-gray-400'>
+          <figcaption className='mt-1 text-[10px] text-center text-gray-50'>
             {effect.value}
           </figcaption>
         </figure>

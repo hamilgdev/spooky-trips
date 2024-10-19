@@ -4,11 +4,38 @@ import { TimelinePages } from './timeline-pages';
 
 export const SpookyStudioSection = () => {
   return (
-    <section className='p-4 bg-gray-200 h-screen'>
-      <div className='l-container h-full'>
+    <section
+      className='p-4 h-screen w-full relative overflow-hidden'
+      style={{
+        backgroundImage:
+          'linear-gradient(to bottom, #09203f, #553064, #a63969, #e0594d, #f09819);',
+      }}
+    >
+      <div
+        className='pointer-events-none w-full h-full absolute -top-20 -left-6'
+        style={{
+          backgroundImage: 'url(/assets/svgs/spider-left.svg)',
+          backgroundSize: '30%',
+          backgroundPosition: 'top left',
+          backgroundRepeat: 'no-repeat',
+          opacity: 0.8,
+        }}
+      />
+
+      <div
+        className='pointer-events-none w-full h-full absolute -top-20 left-16'
+        style={{
+          backgroundImage: 'url(/assets/svgs/spider-right.svg)',
+          backgroundSize: '30%',
+          backgroundPosition: 'top right',
+          backgroundRepeat: 'no-repeat',
+          opacity: 0.8,
+        }}
+      />
+      <div className='l-container h-full relative'>
         <div className='flex flex-col h-full gap-6'>
           <div className='flex-1 flex gap-8'>
-            <aside className='max-w-[312px] h-full bg-slate-50 rounded-md overflow-hidden'>
+            <aside className='max-w-[312px] h-full bg-gray-800/50 rounded-md overflow-hidden'>
               <PanelSettings />
             </aside>
             <StoryCanvas />

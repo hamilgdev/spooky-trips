@@ -34,23 +34,23 @@ export const PanelSettings = () => {
   const onCheckboxHandler = () => setGlobalSettings(!globalSettings);
 
   return (
-    <div className='w-full h-full flex flex-col'>
+    <div className='w-full h-full flex flex-col overflow-hidden'>
       <div className='p-6 flex-1'>
-        <h3 className='text-lg font-bold text-gray-800'>Relato</h3>
+        <h2 className='text-lg font-bold text-gray-100'>Relato</h2>
         <hr className='border-t border-gray-300 my-2' />
 
-        <h4 className='text-md text-gray-600 font-bold mt-6 mb-1'>
+        <h4 className='text-md text-white font-bold mt-6 mb-1'>
           Nivel de terror
         </h4>
-        <p className='text-xs text-gray-500 mb-2 leading-5'>
+        <p className='text-xs text-gray-200 mb-2 leading-5'>
           Determina la intensidad de miendo del relato.
         </p>
         <div className='mb-6'>
           <LevelTerrorOptions />
         </div>
 
-        <h4 className='text-md text-gray-600 font-bold mt-6 mb-1'>Efectos</h4>
-        <p className='text-xs text-gray-500 mb-2 leading-5'>
+        <h4 className='text-md text-white font-bold mt-6 mb-1'>Efectos</h4>
+        <p className='text-xs text-gray-200 mb-2 leading-5'>
           Añade efectos visuales a tus fotos.
         </p>
 
@@ -58,28 +58,28 @@ export const PanelSettings = () => {
           <EffectSelectorOptions />
         </div>
 
-        <h4 className='text-md text-gray-600 font-bold mt-6 mb-1'>
+        <h4 className='text-md text-white font-bold mt-6 mb-1'>
           Configuración
         </h4>
         <div className='flex gap-3 flex-col'>
           <div className='flex gap-1 items-center'>
-            <span className='text-xs text-gray-600'>Páginas totales:</span>
+            <span className='text-xs text-white'>Páginas totales:</span>
             <BasicBadge text={`${timeline?.length || 0}`} />
           </div>
 
-          <div className='flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700'>
+          <div className='flex items-center ps-4 border-2 border-purple-950/50 bg-purple-900/70 rounded-md'>
             <input
               id='globa-settings'
               type='checkbox'
               checked={globalSettings}
               name='global-settings'
-              className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
+              className='w-4 h-4 text-purple-600 bg-purple-500 border-purple-800 rounded-md'
               onChange={onCheckboxHandler}
             />
 
             <label
               htmlFor='globa-settings'
-              className='w-full py-2 ms-3 text-xs font-medium text-gray-600'
+              className='w-full py-2 ms-3 text-xs font-medium text-white'
             >
               Aplicar configuración a todas las páginas
             </label>
@@ -94,8 +94,8 @@ export const PanelSettings = () => {
             isStoryPending ||
             hasSameEffectSettings
           }
-          className='w-full rounded-none h-16'
-          variant='outline'
+          className='w-full rounded-none h-16 text-white font-bold text-lg'
+          variant='default'
           onClick={handleGenerateStory}
         >
           {isStoryCreated ? 'Regenerar' : 'Generar'}&nbsp;Relato

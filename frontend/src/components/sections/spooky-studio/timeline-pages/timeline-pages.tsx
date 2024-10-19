@@ -32,11 +32,11 @@ const PageCard = ({
 
       <div
         className={clsx(
-          'flex flex-col items-center w-20 h-14 bg-gray-400 rounded-sm shadow-md border-2  hover:border-blue-600 cursor-pointer',
-          isSelected && 'bg-slate-600 border-blue-600'
+          'flex flex-col items-center w-20 h-14 bg-purple-950 rounded-md shadow-md border-2 border-purple-800 hover:border-purple-500 cursor-pointer',
+          isSelected && 'bg-purple-700 border-purple-800'
         )}
       />
-      <span className='text-xs font-semibold text-gray-400'>
+      <span className='text-xs font-semibold text-gray-100'>
         Página {count}
       </span>
     </article>
@@ -45,7 +45,7 @@ const PageCard = ({
 
 const TimelineItem = ({ children }: { children: React.ReactNode }) => {
   return (
-    <li className="flex w-fit items-center text-blue-600 after:content-[''] after:pr-8 after:w-fit after:h-1 after:border-b after:border-gray-400 after:border-1 after:mx-6 last:after:hidden">
+    <li className="flex w-fit items-center after:content-[''] after:pr-8 after:w-fit after:h-1 after:border-b after:border-gray-200 after:border-1 after:mx-6 last:after:hidden">
       {children}
     </li>
   );
@@ -67,9 +67,9 @@ export const TimelinePages = () => {
   const isStoryEditing = currentStory?.status === StoryStatus.EDITING;
 
   return (
-    <footer className='bg-slate-50 rounded-md min-h-[124px] flex justify-center overflow-hidden '>
+    <footer className='bg-gray-800/60 rounded-md  min-h-[124px] flex justify-center overflow-hidden '>
       <div className='p-6 flex-1 flex justify-center flex-col'>
-        <ol className='flex text-sm font-medium text-center text-gray-500 items-center'>
+        <ol className='flex text-sm font-medium text-center items-center'>
           {timeline?.map((story, index) => (
             <TimelineItem key={index + 1}>
               <PageCard
@@ -86,7 +86,7 @@ export const TimelinePages = () => {
                 title='Agregar página'
                 variant='ghost'
                 disabled={isStoryPending || isStoryEditing}
-                className='flex items-center text-gray-400 text-xs font-semibold gap-2 mt-1 cursor-pointer'
+                className='flex items-center text-gray-100 text-xs font-semibold gap-2 mt-1 cursor-pointer'
                 onClick={setNewStory}
               >
                 <CopyPlusIcon />
@@ -98,8 +98,8 @@ export const TimelinePages = () => {
 
       <div>
         <Button
-          className='w-full rounded-none h-full'
-          variant='outline'
+          className='w-full rounded-none h-full font-bold text-lg text-white'
+          variant='default'
           onClick={handleFinishStory}
         >
           Terminar Relatos

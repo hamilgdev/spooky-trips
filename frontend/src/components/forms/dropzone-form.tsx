@@ -29,14 +29,14 @@ export const DropzoneForm = () => {
     });
 
   return (
-    <div className='flex items-center justify-center w-full'>
+    <div className='flex items-center justify-center w-full shadow-2xl'>
       <div
         {...getRootProps()}
         className={clsx(
-          'flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50',
+          'flex flex-col items-center justify-center w-full h-64 border border-orange-600 border-dashed rounded-lg cursor-pointer bg-gradient-to-r from-yellow-500',
           isFocused || isDragAccept
-            ? 'border-green-500 bg-green-50'
-            : 'hover:bg-gray-100'
+            ? 'border-orange-800 bg-orange-500'
+            : 'hover:bg-orange-400'
         )}
       >
         <input {...getInputProps()} accept='application/pdf' />
@@ -47,34 +47,28 @@ export const DropzoneForm = () => {
         <div className='flex flex-col gap-2 justify-center items-center'>
           {!isDragActive && !isLoading && (
             <div className='text-center'>
-              <p className=' text-sm text-gray-500 dark:text-gray-400'>
+              <p className=' text-sm text-gray-800'>
                 <span className='font-semibold'>Click para cargar</span> o
                 arrastra tu foto aquí
               </p>
-              <p className='text-xs text-gray-500 dark:text-gray-400'>
+              <p className='text-xs text-gray-800'>
                 Solo imagenes *(png, jpg, jpeg, webp)
               </p>
             </div>
           )}
 
           {isDragActive && isDragAccept && (
-            <p className='text-sm text-gray-500 dark:text-gray-400'>
-              Suelta el archivo aqui...
-            </p>
+            <p className='text-sm text-gray-800'>Suelta el archivo aqui...</p>
           )}
 
           {isDragActive && !isDragAccept && (
-            <p className='text-sm text-red-500 dark:text-red-400'>
-              Solo se permiten imagenes
-            </p>
+            <p className='text-sm text-red-700'>Solo se permiten imagenes</p>
           )}
 
           {isLoading && (
             <div className='flex flex-col justify-center items-center'>
               <ReloadIcon className='animate-spin' />
-              <p className='text-sm text-gray-500 dark:text-gray-400'>
-                Cargando imagen...
-              </p>
+              <p className='text-sm text-black'>Cargando imagen...</p>
             </div>
           )}
         </div>

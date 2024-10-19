@@ -4,7 +4,7 @@ interface BadgeProps {
 
 export const BasicBadge = ({ text }: BadgeProps) => {
   return (
-    <span className='bg-pink-100 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-pink-400 border border-pink-400'>
+    <span className='bg-purple-800 text-purple-200 text-xs font-medium me-2 px-2.5 py-0.5 rounded border border-purple-400'>
       {text}
     </span>
   );

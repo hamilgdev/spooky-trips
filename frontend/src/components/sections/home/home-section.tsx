@@ -2,13 +2,7 @@ import { BookCard, DropzoneForm } from '@/components';
 
 export const HomeSection = () => {
   return (
-    <section
-      className='relative min-h-screen flex items-center justify-center overflow-hidden'
-      style={{
-        backgroundImage:
-          'linear-gradient(to bottom, #09203f, #553064, #a63969, #e0594d, #f09819);',
-      }}
-    >
+    <section className='relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-[#09203f] to-[#09203f]'>
       <div
         className='pointer-events-none w-full h-full absolute -top-20 -left-6'
         style={{

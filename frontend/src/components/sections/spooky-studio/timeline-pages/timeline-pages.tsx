@@ -1,8 +1,11 @@
 'use client';
 
-import { Button, CopyPlusIcon, TrashIcon } from '@/components';
+import jsPDF from 'jspdf';
+
+import { Button, CopyPlusIcon, TrashIcon, ReloadIcon } from '@/components';
 import { spookyStoryStore, timelineStoryStore } from '@/store';
 import { Story, StoryStatus } from '@/interfaces';
+import { useState } from 'react';
 
 const LIMIT_PAGES = 5;
 
@@ -54,23 +57,82 @@ export const TimelinePages = () => {
     spookyStoryStore();
   const { timeline } = timelineStoryStore();
 
-  const handleFinishStory = () => {
-    console.log('finish story');
+  const [isExporting, setIsExporting] = useState(false);
+
+  const handleFinishStory = async () => {
+    const doc = new jsPDF({
+      orientation: 'portrait',
+      unit: 'px',
+      format: 'a4',
+    });
+
+    if (!timeline) return;
+
+    setIsExporting(true);
+
+    const exportStories = timeline.filter(
+      (story) => story.status === StoryStatus.CREATED
+    );
+
+    for (let index = 0; index < exportStories.length; index++) {
+      const story = exportStories[index];
+
+      if (story.tranformed_image && story.paragraph) {
+        const pageWidth = doc.internal.pageSize.width;
+        const pageHeight = doc.internal.pageSize.height;
+
+        const img = new Image();
+        img.src = story.tranformed_image;
+
+        await new Promise((resolve) => {
+          img.onload = () => {
+            const imgWidth = pageWidth * 0.45;
+            const imgHeight = (img.height * imgWidth) / img.width;
+
+            const imgX = 20;
+            const imgY = (pageHeight - imgHeight) / 2;
+
+            if (index !== 0) doc.addPage();
+            doc.addImage(img, 'PNG', imgX, imgY, imgWidth, imgHeight);
+
+            resolve(true);
+          };
+        });
+
+        const textX = pageWidth * 0.55;
+        const textY = pageHeight / 2;
+
+        doc.setFontSize(12);
+        const textLines = doc.splitTextToSize(story.paragraph, pageWidth * 0.4);
+
+        const textHeight = textLines.length * 12;
+        const centeredTextY = textY - textHeight / 2;
+
+        doc.text(textLines, textX, centeredTextY);
+      }
+    }
+
+    const pdfUrl = doc.output('bloburl');
+    window.open(pdfUrl, '_blank');
+    setIsExporting(false);
+  };
+
+  const handleSelectStory = (story: Story) => {
+    if (onAirStory) return;
+    setSelectStory(story);
   };
 
   // validations
 
+  const hasSomeStoryCreated = timeline?.some(
+    (story) => story.status === StoryStatus.CREATED
+  );
   const isFull = timeline?.length === LIMIT_PAGES;
 
   const isStoryEditing = currentStory?.status === StoryStatus.EDITING;
   const hasSomeStoryPending = timeline?.some(
     (story) => story.status === StoryStatus.PENDING
   );
-
-  const handleSelectStory = (story: Story) => {
-    if (onAirStory) return;
-    setSelectStory(story);
-  };
 
   return (
     <footer className='bg-gray-800/60 rounded-md  min-h-[124px] flex justify-center overflow-hidden '>
@@ -104,11 +166,17 @@ export const TimelinePages = () => {
 
       <div>
         <Button
-          className='w-full rounded-none h-full font-bold text-lg text-white'
+          disabled={!hasSomeStoryCreated || isExporting || onAirStory}
+          className='w-full rounded-none h-full font-bold text-lg text-white flex gap-2 items-center justify-center'
           variant='default'
           onClick={handleFinishStory}
         >
-          Terminar Relatos
+          {isExporting && (
+            <div className='animate-spin'>
+              <ReloadIcon />
+            </div>
+          )}
+          Exportar Relatos
         </Button>
       </div>
     </footer>

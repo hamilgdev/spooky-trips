@@ -39,7 +39,15 @@ export const DropzoneForm = () => {
             : 'hover:bg-orange-400'
         )}
       >
-        <input {...getInputProps()} accept='application/pdf' />
+        <input
+          {...getInputProps()}
+          accept='
+          image/png,
+          image/jpeg,
+          image/jpg,
+          image/webp
+          '
+        />
         <div className='mb-2'>
           <FileUploadIcon />
         </div>

@@ -1,4 +1,4 @@
-# Spooky Trips 🎃
+# 🎃 Spooky Trips
 
 ![Cover application](/assets/og.jpeg)
 
